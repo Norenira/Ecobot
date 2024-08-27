@@ -1,0 +1,31 @@
+import discord
+from discord.ext import commands
+
+intents=discord.Intents.default()
+intents.message_content=True
+
+bot=commands.Bot(command_prefix="!",intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f"se inicio el bot{bot.user}")    
+
+descomponer={
+    "botella plastico":500,
+    "lata aluminio":40,
+    "bolsa de plastico ":150,
+    "vidrio":4000,
+}
+
+@bot.command()
+async def impact(ctx,*,objeto:str):
+    objeto=objeto.lower()
+    if objeto in descomponer:
+        time=descomponer[objeto]
+        await ctx.send(f"El/la {objeto} tarda un aproximado de {time} años en descomponerse")
+        if time>=100:
+            await ctx.send("Porfavor,reciclar,reutilizar el producto o usar otro producto")
+    else:
+        await ctx.send("El objeto no esta en la biblioteca")
+
+bot.run("")
