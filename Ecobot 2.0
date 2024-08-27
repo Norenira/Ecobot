@@ -1,0 +1,63 @@
+import discord
+from discord.ext import commands
+import random
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f"se inició el bot {bot.user}")
+
+# Diccionario de descomposición
+descomponer = {
+    "botella plastico": 500,
+    "lata aluminio": 40,
+    "bolsa de plastico": 150,
+    "vidrio": 4000,
+    "papel": 2,  
+    "chicle": 5,  
+    "cigarro": 10, 
+    "tetrapack": 30, 
+    "neumatico": 1000, 
+}
+
+@bot.command()
+async def impact(ctx, *, objeto: str):
+    objeto = objeto.lower()
+    if objeto in descomponer:
+        time = descomponer[objeto]
+        await ctx.send(f"El/la {objeto} tarda un aproximado de {time} años en descomponerse.")
+        if time >= 100:
+            await ctx.send("Por favor, reciclar, reutilizar el producto o usar otro producto.")
+    else:
+        await ctx.send("El objeto no está en la biblioteca.")
+
+@bot.command()
+async def info(ctx):
+    await ctx.send("Este bot de ecología fue creado para concienciar sobre el impacto de los materiales en el medio ambiente.Desarrollado por un entusiasta de la ecología y la programación(Santiago)Versión 1.0. ¡A seguir cuidando nuestro planeta!")
+
+link = [
+    "- https://www.wwf.org",
+    "- https://www.greenpeace.org",
+    "- https://www.nrdc.org"
+]
+@bot.command()
+async def links(ctx):
+    lns = random.choice(link)
+    await ctx.send(f"Aquí tienes algun enlace útil sobre ecología:{lns}")
+
+chistes = [
+    "¿Por qué los árboles no usan computadoras? Porque les da miedo el ratón.",
+    "¿Qué hace un pez fuera del agua? ¡Nada ecológico!",
+    "¿Por qué el planeta es tan bueno contando chistes? Porque siempre tiene un buen ambiente."
+]
+
+@bot.command()
+async def jajas(ctx):
+    risa = random.choice(chistes)
+    await ctx.send(risa)
+
+bot.run("")
